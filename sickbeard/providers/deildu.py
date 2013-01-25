@@ -121,53 +121,6 @@ class DeilduProvider(generic.TorrentProvider):
         
         return quality_string
 
-    def _find_season_quality(self,title,torrent_id):
-        """ Return the modified title of a Season Torrent with the quality found inspecting torrent file list """
-
-        mediaExtensions = ['avi', 'mkv', 'wmv', 'divx',
-                           'vob', 'dvr-ms', 'wtv', 'ts'
-                           'ogv', 'rar', 'zip'] 
-        
-        quality = Quality.UNKNOWN        
-        
-        fileName = None
-        
-        fileURL = self.url+'ajax_details_filelist.php?id='+str(torrent_id)
-      
-        data = self.getURL(fileURL)
-        
-        if not data:
-            return None
-        
-        filesList = re.findall('<td.+>(.*?)</td>',data) 
-        
-        if not filesList: 
-            logger.log(u"Unable to get the torrent file list for "+title, logger.ERROR)
-            
-        for fileName in filter(lambda x: x.rpartition(".")[2].lower() in mediaExtensions, filesList):
-            quality = Quality.nameQuality(os.path.basename(fileName))
-            if quality != Quality.UNKNOWN: break
-
-        if fileName!=None and quality == Quality.UNKNOWN:
-            quality = Quality.assumeQuality(os.path.basename(fileName))            
-
-        if quality == Quality.UNKNOWN:
-            logger.log(u"No Season quality for "+title, logger.DEBUG)
-            return None
-
-        try:
-            myParser = NameParser()
-            parse_result = myParser.parse(fileName)
-        except InvalidNameException:
-            return None
-        
-        logger.log(u"Season quality for "+title+" is "+Quality.qualityStrings[quality], logger.DEBUG)
-        
-        if parse_result.series_name and parse_result.season_number: 
-            title = parse_result.series_name+' S%02d' % int(parse_result.season_number)+' '+self._reverseQuality(quality)
-        
-        return title
-
     def _get_season_search_strings(self, show, season=None):
 
         search_string = {'Episode': []}
@@ -267,9 +220,9 @@ class DeilduProvider(generic.TorrentProvider):
                     if not show_name_helpers.filterBadReleases(title):
                         continue
 
-                    #Try to find the real Quality for full season torrent analyzing files in torrent 
-                    if mode == 'Season' and Quality.nameQuality(title) == Quality.UNKNOWN:
-                        title = self._find_season_quality(title,id)
+                    # TODO: Find a way to get filelist from Deildu to check quality of whole seasons
+                    # if mode == 'Season' and Quality.nameQuality(title) == Quality.UNKNOWN:
+                    #     title = self._find_season_quality(title,id)
                     
                     if not title:
                         continue
