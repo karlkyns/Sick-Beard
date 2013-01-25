@@ -1,5 +1,14 @@
-Sick Beard
+Deildu.net Search Provider Add-on for Sick Beard
 =====
+
+This is a fork of the PirateBay branch from the Sick Beard repo, a Deildu.net Search Provider add-on for Sick Beard, based on 
+ThePirateBay add-on.
+
+## Installation
+
+Coming soon.
+
+## Original Sick Beard Readme
 
 *Sick Beard is currently an alpha release. There may be severe bugs in it and at any given time it may not work at all.*
 
