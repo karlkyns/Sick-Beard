@@ -30,7 +30,7 @@ from threading import Lock
 
 # apparently py2exe won't build these unless they're imported somewhere
 from sickbeard import providers, metadata
-from providers import ezrss, tvtorrents, btn, nzbsrus, newznab, womble, thepiratebay, dtt
+from providers import ezrss, tvtorrents, btn, nzbsrus, newznab, womble, thepiratebay, dtt, deildu
 from sickbeard.config import CheckSection, check_setting_int, check_setting_str, ConfigMigrator
 
 from sickbeard import searchCurrent, searchBacklog, showUpdater, versionChecker, properFinder, autoPostProcesser, subtitles
@@ -166,6 +166,12 @@ TVTORRENTS_HASH = None
 
 BTN = False
 BTN_API_KEY = None
+
+DEILDU = False
+DEILDU_USERNAME = None
+DEILDU_PASSWORD = None
+
+DEILDURSS = False
 
 DTT = False
 DTT_NORAR = False
@@ -364,7 +370,7 @@ def initialize(consoleLogging=True):
                 PLEX_SERVER_HOST, PLEX_HOST, PLEX_USERNAME, PLEX_PASSWORD, \
                 showUpdateScheduler, __INITIALIZED__, LAUNCH_BROWSER, UPDATE_SHOWS_ON_START, showList, loadingShowList, \
                 NZBS, NZBS_UID, NZBS_HASH, EZRSS, TVTORRENTS, TVTORRENTS_DIGEST, TVTORRENTS_HASH, BTN, BTN_API_KEY, \
-                DTT, DTT_NORAR, DTT_SINGLE, THEPIRATEBAY, THEPIRATEBAY_TRUSTED, THEPIRATEBAY_PROXY, THEPIRATEBAY_PROXY_URL, THEPIRATEBAY_BLACKLIST, TORRENT_DIR, USENET_RETENTION, SOCKET_TIMEOUT, \
+                DTT, DTT_NORAR, DTT_SINGLE, THEPIRATEBAY, DEILDU, DEILDU_USERNAME, DEILDU_PASSWORD, DEILDURSS, THEPIRATEBAY_TRUSTED, THEPIRATEBAY_PROXY, THEPIRATEBAY_PROXY_URL, THEPIRATEBAY_BLACKLIST, TORRENT_DIR, USENET_RETENTION, SOCKET_TIMEOUT, \
                 SEARCH_FREQUENCY, DEFAULT_SEARCH_FREQUENCY, BACKLOG_SEARCH_FREQUENCY, \
                 QUALITY_DEFAULT, FLATTEN_FOLDERS_DEFAULT, SUBTITLES_DEFAULT, STATUS_DEFAULT, \
                 GROWL_NOTIFY_ONSNATCH, GROWL_NOTIFY_ONDOWNLOAD, GROWL_NOTIFY_ONSUBTITLEDOWNLOAD, TWITTER_NOTIFY_ONSNATCH, TWITTER_NOTIFY_ONDOWNLOAD, TWITTER_NOTIFY_ONSUBTITLEDOWNLOAD, \
@@ -528,8 +534,14 @@ def initialize(consoleLogging=True):
         TVTORRENTS_DIGEST = check_setting_str(CFG, 'TVTORRENTS', 'tvtorrents_digest', '')
         TVTORRENTS_HASH = check_setting_str(CFG, 'TVTORRENTS', 'tvtorrents_hash', '')
 
-        BTN = bool(check_setting_int(CFG, 'BTN', 'btn', 0))    
+        BTN = bool(check_setting_int(CFG, 'BTN', 'btn', 0))
         BTN_API_KEY = check_setting_str(CFG, 'BTN', 'btn_api_key', '')
+
+        DEILDU = bool(check_setting_int(CFG, 'DEILDU', 'deildu', 0))
+        DEILDU_USERNAME = check_setting_str(CFG, 'DEILDU', 'deildu_username', '')
+        DEILDU_PASSWORD = check_setting_str(CFG, 'DEILDU', 'deildu_password', '')
+
+        DEILDURSS = bool(check_setting_int(CFG, 'DEILDURSS', 'deildurss', 0))
 
         DTT = bool(check_setting_int(CFG, 'DTT', 'dtt', 0))
         DTT_NORAR = bool(check_setting_int(CFG, 'DTT', 'dtt_norar', 0))
@@ -1120,6 +1132,14 @@ def save_config():
     new_config['BTN'] = {}
     new_config['BTN']['btn'] = int(BTN)
     new_config['BTN']['btn_api_key'] = BTN_API_KEY
+
+    new_config['DEILDU'] = {}
+    new_config['DEILDU']['deildu'] = int(DEILDU)
+    new_config['DEILDU']['deildu_username'] = DEILDU_USERNAME
+    new_config['DEILDU']['deildu_password'] = DEILDU_PASSWORD
+
+    new_config['DEILDURSS'] = {}
+    new_config['DEILDURSS']['deildurss'] = int(DEILDURSS)
 
     new_config['DTT'] = {}
     new_config['DTT']['dtt'] = int(DTT)

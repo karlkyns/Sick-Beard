@@ -123,12 +123,12 @@ def sanitizeFileName (name):
     return name
 
 
-def getURL (url, headers=[]):
+def getURL (url, headers=[], cj=None):
     """
     Returns a byte-string retrieved from the url provider.
     """
 
-    opener = urllib2.build_opener()
+    opener = urllib2.build_opener(urllib2.HTTPCookieProcessor(cj))
     opener.addheaders = [('User-Agent', USER_AGENT), ('Accept-Encoding', 'gzip,deflate')]
     for cur_header in headers:
         opener.addheaders.append(cur_header)

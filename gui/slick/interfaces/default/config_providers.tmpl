@@ -1,6 +1,7 @@
 #import sickbeard
 #from sickbeard.providers.generic import GenericProvider
 #from sickbeard.providers import thepiratebay
+#from sickbeard.providers import deildu
 #set global $title="Config - Providers"
 #set global $header="Search Providers"
 
@@ -75,7 +76,7 @@ var show_nzb_providers = #if $sickbeard.USE_NZBS then "true" else "false"#;
                             <a href="$curProvider.url" class="imgLink" target="_new"><img src="$sbRoot/images/providers/$curProvider.imageName()" alt="$curProvider.name" title="$curProvider.name" width="16" height="16" /></a>
                             $curProvider.name
                             #if not $curProvider.supportsBacklog then "*" else ""#
-                            #if $curProvider.name == "EZRSS" or $curProvider.name == "ThePirateBay" or $curProvider.name == "DailyTvTorrents" then "**" else ""#
+                            #if $curProvider.name == "EZRSS" or $curProvider.name == "ThePirateBay" or $curProvider.name == "DailyTvTorrents" or $curProvider.name == "Deildu" then "**" else ""#
                             <span class="ui-icon ui-icon-arrowthick-2-n-s pull-right"></span>
                           </li>
                         #end for
@@ -98,7 +99,7 @@ var show_nzb_providers = #if $sickbeard.USE_NZBS then "true" else "false"#;
                                 <span class="component-title jumbo">Configure Provider:</span>
                                 <span class="component-desc">
                                     #set $provider_config_list = []
-                                    #for $cur_provider in ("nzbs_r_us", "thepiratebay", "dailytvtorrents", "tvtorrents", "btn"):
+                                    #for $cur_provider in ("nzbs_r_us", "thepiratebay", "dailytvtorrents", "tvtorrents", "btn", "deildu"):
                                         #set $cur_provider_obj = $sickbeard.providers.getProviderClass($cur_provider)
                                         #if $cur_provider_obj.providerType == $GenericProvider.NZB and not $sickbeard.USE_NZBS:
                                             #continue
@@ -223,6 +224,21 @@ var show_nzb_providers = #if $sickbeard.USE_NZBS then "true" else "false"#;
                             <label class="clearfix">
                                 <span class="component-title">BTN API KEY:</span>
                                 <input class="component-desc" type="text" name="btn_api_key" value="$sickbeard.BTN_API_KEY" size="40" />
+                            </label>
+                        </div>
+</div>
+
+<div class="providerDiv" id="deilduDiv">
+                        <div class="field-pair">
+                            <label class="clearfix">
+                                <span class="component-title">Username:</span>
+                                <input class="component-desc" type="text" name="deildu_username" value="$sickbeard.DEILDU_USERNAME" size="40" />
+                            </label>
+                        </div>
+                        <div class="field-pair">
+                            <label class="clearfix">
+                                <span class="component-title">Password:</span>
+                                <input class="component-desc" type="password" name="deildu_password" value="$sickbeard.DEILDU_PASSWORD" size="40" />
                             </label>
                         </div>
 </div>

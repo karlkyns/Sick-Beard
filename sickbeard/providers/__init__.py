@@ -22,6 +22,8 @@ __all__ = ['ezrss',
            'womble',
            'btn',
            'thepiratebay',
+           'deildu',
+           # 'deildurss',
            'dtt',           
            ]
 

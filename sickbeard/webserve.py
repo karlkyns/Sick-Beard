@@ -1228,6 +1228,7 @@ class ConfigProviders:
                       btn_api_key=None,
                       dtt_norar = None, dtt_single = None,
                       thepiratebay_trusted=None, thepiratebay_proxy=None, thepiratebay_proxy_url=None,
+                      deildu_username=None, deildu_password=None,
                       newzbin_username=None, newzbin_password=None,
                       provider_order=None):
 
@@ -1296,9 +1297,13 @@ class ConfigProviders:
             elif curProvider in newznabProviderDict:
                 newznabProviderDict[curProvider].enabled = bool(curEnabled)
             elif curProvider == 'dailytvtorrents':
-                sickbeard.DTT = curEnabled                
+                sickbeard.DTT = curEnabled
             elif curProvider == 'thepiratebay':
-                sickbeard.THEPIRATEBAY = curEnabled                   
+                sickbeard.THEPIRATEBAY = curEnabled
+            elif curProvider == 'deildurss':
+                sickbeard.DEILDURSS = curEnabled
+            elif curProvider == 'deildu':
+                sickbeard.DEILDU = curEnabled
             else:
                 logger.log(u"don't know what "+curProvider+" is, skipping")
 
@@ -1306,6 +1311,9 @@ class ConfigProviders:
         sickbeard.TVTORRENTS_HASH = tvtorrents_hash.strip()
 
         sickbeard.BTN_API_KEY = btn_api_key.strip()
+
+        sickbeard.DEILDU_USERNAME = deildu_username.strip()
+        sickbeard.DEILDU_PASSWORD = deildu_password.strip()
 
         if dtt_norar == "on":
             dtt_norar = 1
