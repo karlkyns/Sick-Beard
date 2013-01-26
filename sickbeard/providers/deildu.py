@@ -38,10 +38,10 @@ cookie_filename = "deildu.cookies"
 
 class DeilduLoginHandler(object):
 
-    def __init__(self, login, password):
+    def __init__(self):
         """ Start up... """
-        self.login = login
-        self.password = password
+        self.login = sickbeard.DEILDU_USERNAME
+        self.password = sickbeard.DEILDU_PASSWORD
 
         self.cj = cookielib.MozillaCookieJar(cookie_filename)
         # check if we can access cookie, and make sure it's not empty
@@ -176,6 +176,7 @@ class DeilduProvider(generic.TorrentProvider):
     
         results = []
         items = {'Season': [], 'Episode': []}
+        dlh = DeilduLoginHandler()
 
         for mode in search_params.keys():
             for search_string in search_params[mode]:
@@ -184,7 +185,6 @@ class DeilduProvider(generic.TorrentProvider):
                 logger.log(u"Search string: " + searchURL, logger.DEBUG)
         
                 # make sure we've got a cookie ready to use deildu.net
-                dlh = DeilduLoginHandler(sickbeard.DEILDU_USERNAME, sickbeard.DEILDU_PASSWORD)
                 if not dlh.loggedIn():
                     logger.log("User or pass for Deildu.net not correct", logger.ERROR)
                     return []
@@ -245,6 +245,42 @@ class DeilduProvider(generic.TorrentProvider):
             url = url.replace('&amp;','&')
 
         return (title, url)
+
+    def downloadResult(self, result):
+        """
+        Save the result to disk.
+        """
+
+        logger.log(u"Making sure we have a cookie for Deildu", logger.DEBUG)
+
+        dlh = DeilduLoginHandler()
+
+        logger.log(u"Downloading a result from " + self.name+" at " + result.url)
+
+        data = self.getURL(result.url, dlh.cj)
+
+        if data == None:
+            return False
+
+        saveDir = sickbeard.TORRENT_DIR
+        writeMode = 'wb'
+
+        # use the result name as the filename
+        fileName = ek.ek(os.path.join, saveDir, helpers.sanitizeFileName(result.name) + '.' + self.providerType)
+
+        logger.log(u"Saving to " + fileName, logger.DEBUG)
+
+        try:
+            fileOut = open(fileName, writeMode)
+            fileOut.write(data)
+            fileOut.close()
+            helpers.chmodAsParent(fileName)
+        except IOError, e:
+            logger.log("Unable to save the file: "+ex(e), logger.ERROR)
+            return False
+
+        # as long as it's a valid download then consider it a successful snatch
+        return self._verify_download(fileName)
 
     def getURL(self, url, cj=None):
             
