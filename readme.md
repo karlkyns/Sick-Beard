@@ -8,6 +8,7 @@ ThePirateBay add-on.
 
 *These instructions assume you already have SickBeard setup, so we also take in to consideration copying the SickBeard database and config. If you're setting SickBeard up for the first time, simply ignore those steps.*
 
+```
 # Back up existing SickBeard folder
 mv sickbeard sickbeard_old
 # Kill SickBeard
@@ -23,6 +24,7 @@ cp sickbeard_old/autoProcessTV/autoProcessTV.cfg  sickbeard-deildu/autoProcessTV
 # Start new Deildu.net SickBeard
 python sickbeard-deildu/SickBeard.py -q > /dev/null 2>&1 &
 # All done
+```
 
 *Note that these instructions are based on locations you might not want to use, like storing sickbeard in your home directory, calling it sickbeard-deildu, etc. Instructions are only for reference, use at your own risk.*
 
