@@ -20,7 +20,7 @@ git clone https://github.com/trymbill/Sick-Beard.git sickbeard-deildu
 # Copy old settings over to new installation
 cp sickbeard_old/sickbeard.db sickbeard-deildu
 cp sickbeard_old/config.ini sickbeard-deildu
-cp sickbeard_old/autoProcessTV/autoProcessTV.cfg  sickbeard-deildu/autoProcessTV.
+cp sickbeard_old/autoProcessTV/autoProcessTV.cfg  sickbeard-deildu/autoProcessTV
 # Start new Deildu.net SickBeard
 python sickbeard-deildu/SickBeard.py -q > /dev/null 2>&1 &
 # All done
