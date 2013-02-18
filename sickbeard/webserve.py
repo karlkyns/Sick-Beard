@@ -1308,19 +1308,16 @@ class ConfigProviders:
                 sickbeard.DTT = curEnabled
             elif curProvider == 'thepiratebay':
                 sickbeard.THEPIRATEBAY = curEnabled
-<<<<<<< HEAD
             elif curProvider == 'deildurss':
                 sickbeard.DEILDURSS = curEnabled
             elif curProvider == 'deildu':
                 sickbeard.DEILDU = curEnabled
-=======
             elif curProvider == 'torrentleech':
                 sickbeard.TORRENTLEECH = curEnabled
             elif curProvider == 'nzbx':
                 sickbeard.NZBX = curEnabled
             elif curProvider == 'iptorrents':
-                sickbeard.IPTORRENTS = curEnabled    
->>>>>>> upstream/ThePirateBay
+                sickbeard.IPTORRENTS = curEnabled
             else:
                 logger.log(u"don't know what "+curProvider+" is, skipping")
 
