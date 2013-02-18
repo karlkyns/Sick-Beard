@@ -58,7 +58,10 @@ try:
 except ImportError:
     from lib import simplejson as json
 
-import xml.etree.cElementTree as etree
+try:
+    import xml.etree.cElementTree as etree
+except ImportError:
+    import xml.etree.ElementTree as etree
 
 from sickbeard import browser
 
@@ -3222,7 +3225,7 @@ class UI:
 
         return json.dumps(messages)
 
-   
+
 class WebInterface:
 
     @cherrypy.expose
@@ -3249,7 +3252,7 @@ class WebInterface:
             return cherrypy.lib.static.serve_file(default_image_path, content_type="image/png")
 
         cache_obj = image_cache.ImageCache()
-        
+
         if which == 'poster':
             image_file_name = cache_obj.poster_path(showObj.tvdbid)
         if which == 'poster_thumb':
@@ -3260,7 +3263,29 @@ class WebInterface:
             image_file_name = cache_obj.banner_thumb_path(showObj.tvdbid)
 
         if ek.ek(os.path.isfile, image_file_name):
-            return cherrypy.lib.static.serve_file(image_file_name, content_type="image/jpeg")
+            # use startup argument to prevent using PIL even if installed
+            if sickbeard.NO_RESIZE:
+                return cherrypy.lib.static.serve_file(image_file_name, content_type="image/jpeg")
+            try:
+                from PIL import Image
+                from cStringIO import StringIO
+            except ImportError: # PIL isn't installed
+                return cherrypy.lib.static.serve_file(image_file_name, content_type="image/jpeg")
+            else:
+                im = Image.open(image_file_name)
+                if im.mode == 'P': # Convert GIFs to RGB
+                    im = im.convert('RGB')
+                if which == 'banner':
+                    size = 606, 112
+                elif which == 'poster':
+                    size = 136, 200
+                else:
+                    return cherrypy.lib.static.serve_file(image_file_name, content_type="image/jpeg")
+                im = im.resize(size, Image.ANTIALIAS)
+                imgbuffer = StringIO()
+                im.save(imgbuffer, 'JPEG', quality=85)
+                cherrypy.response.headers['Content-Type'] = 'image/jpeg'
+                return imgbuffer.getvalue()
         else:
             return cherrypy.lib.static.serve_file(default_image_path, content_type="image/png")
 
