@@ -1350,7 +1350,7 @@ class ConfigProviders:
 
         sickbeard.NZBSRUS_UID = nzbs_r_us_uid.strip()
         sickbeard.NZBSRUS_HASH = nzbs_r_us_hash.strip()
-
+        
         sickbeard.PROVIDER_ORDER = provider_list
 
         sickbeard.save_config()
